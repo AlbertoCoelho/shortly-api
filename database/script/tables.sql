@@ -5,7 +5,7 @@ CREATE TABLE users (
     password text NOT NULL
 );
 
-CREATE TABLE token (
+CREATE TABLE sessions (
     id serial PRIMARY KEY,
     "userId" integer REFERENCES users(id),
     token text NOT NULL
