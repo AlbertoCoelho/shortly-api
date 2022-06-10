@@ -71,5 +71,27 @@ const getUser = async (req,res) => {
   }
 }
 
-const modulesSignUpController = { signUp,getUser };
+const rankingUsers = async (req,res) => {
+
+  try {
+    const result = await db.query(`
+      SELECT users.id,users.name, COUNT(urls.url) AS "linksCount", SUM(urls."visitCount") AS "visitCount"
+      FROM users
+      LEFT JOIN urls
+      ON urls."userId" = users.id
+      GROUP BY users.id
+      ORDER BY "visitCount" DESC
+      LIMIT 10
+    `);
+
+    console.log(result);
+    res.status(200).send(result.rows);
+  } catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+
+}
+
+const modulesSignUpController = { signUp,getUser,rankingUsers };
 export default modulesSignUpController;
