@@ -43,7 +43,7 @@ const getUser = async (req,res) => {
     }
 
     const userResult = await db.query(`
-      SELECT users.id,users.name,SUM(urls."visitCount") AS "visitCount"
+      SELECT users.id,users.name,SUM(COALESCE(urls."visitCount",0)) AS "visitCount"
       FROM users
       LEFT JOIN urls
       ON urls."userId" = users.id
@@ -75,7 +75,7 @@ const rankingUsers = async (req,res) => {
 
   try {
     const result = await db.query(`
-      SELECT users.id,users.name, COUNT(urls.url) AS "linksCount", SUM(urls."visitCount") AS "visitCount"
+      SELECT users.id,users.name, COUNT(urls.url) AS "linksCount", SUM(COALESCE(urls."visitCount",0)) AS "visitCount"
       FROM users
       LEFT JOIN urls
       ON urls."userId" = users.id
@@ -83,8 +83,6 @@ const rankingUsers = async (req,res) => {
       ORDER BY "visitCount" DESC
       LIMIT 10
     `);
-
-    console.log(result);
     res.status(200).send(result.rows);
   } catch (err){
     console.log(err);
