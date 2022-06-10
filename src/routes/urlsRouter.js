@@ -5,8 +5,9 @@ import modulesUrlController from "../controllers/urlController.js";
 
 const urlsRouter = Router();
 
-const { createShorten } = modulesUrlController;
+const { createShorten,userUrl } = modulesUrlController;
 
 urlsRouter.post("/urls/shorten", urlMiddleware, validateToken, createShorten);
+urlsRouter.get("/urls/:id", userUrl);
 
 export default urlsRouter;

@@ -19,5 +19,26 @@ const createShorten = async (req,res) => {
   }
 }
 
-const modulesUrlController = { createShorten };
+const userUrl = async (req,res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await db.query(`
+      SELECT id,"shortUrl",url
+      FROM urls
+      WHERE id=$1 
+    `,[id]);
+  
+    if(result.rowCount === 0) {
+      res.sendStatus(404);
+    }
+  
+    res.status(200).send(result.rows[0]);
+  } catch(err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+}
+
+const modulesUrlController = { createShorten,userUrl };
 export default modulesUrlController;
