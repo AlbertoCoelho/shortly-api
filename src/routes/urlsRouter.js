@@ -5,9 +5,10 @@ import modulesUrlController from "../controllers/urlController.js";
 
 const urlsRouter = Router();
 
-const { createShorten,userUrl } = modulesUrlController;
+const { createShorten,urlByUserId,openUrl } = modulesUrlController;
 
 urlsRouter.post("/urls/shorten", urlMiddleware, validateToken, createShorten);
-urlsRouter.get("/urls/:id", userUrl);
+urlsRouter.get("/urls/:id", urlByUserId);
+urlsRouter.get("/urls/open/:shortUrl", openUrl);
 
 export default urlsRouter;

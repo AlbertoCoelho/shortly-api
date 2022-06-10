@@ -19,7 +19,7 @@ const createShorten = async (req,res) => {
   }
 }
 
-const userUrl = async (req,res) => {
+const urlByUserId = async (req,res) => {
   const { id } = req.params;
 
   try {
@@ -40,5 +40,32 @@ const userUrl = async (req,res) => {
   }
 }
 
-const modulesUrlController = { createShorten,userUrl };
+const openUrl = async (req,res) => {
+  const { shortUrl } = req.params;
+
+  try {
+    const result = await db.query(`
+      SELECT *
+      FROM urls
+      WHERE "shortUrl"=$1
+    `, [shortUrl]);
+  
+    if(result.rowCount === 0){
+      return res.sendStatus(404);
+    }
+  
+    await db.query(`
+      UPDATE urls
+      SET "visitCount"=$1
+      WHERE id=$2
+    `,[result.rows[0].visitCount + 1,result.rows[0].id]);
+  
+    res.redirect(result.rows[0].url);
+  } catch(err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+}
+
+const modulesUrlController = { createShorten,urlByUserId,openUrl };
 export default modulesUrlController;
