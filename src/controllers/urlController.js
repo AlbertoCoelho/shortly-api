@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 const createShorten = async (req,res) => {
   const { user } = res.locals;
   const { url } = req.body;
-  const shortUrl = {shortUrl: nanoid(10)};
+  const shortUrl = nanoid(10);
 
   try{
     await db.query(`
