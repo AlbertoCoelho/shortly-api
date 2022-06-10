@@ -62,7 +62,7 @@ const getUser = async (req,res) => {
     `, [id]);
 
     const [userRows] = userResult.rows;
-    const [urls] = urlsResult.rows;
+    const urls = urlsResult.rows;
 
     res.status(200).send({...userRows,shortenedUrls: urls})
   } catch (err){
