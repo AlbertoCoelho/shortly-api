@@ -72,7 +72,7 @@ const getUser = async (req,res) => {
 }
 
 const rankingUsers = async (req,res) => {
-
+  console.log("heroku deploy");
   try {
     const result = await db.query(`
       SELECT users.id,users.name, COUNT(urls.url) AS "linksCount", SUM(COALESCE(urls."visitCount",0)) AS "visitCount"
