@@ -37,16 +37,6 @@ const getUser = async (req,res) => {
   const { id } = req.params;
 
   try {
-    const existingUser = await db.query(`
-    SELECT *
-    FROM users
-    WHERE id=$1
-    `, [id])
-
-    if(existingUser.rowCount === 0){
-      return res.sendStatus(404);
-    }
-
     //!== vai dar 401.
     if(id != user){
       return res.sendStatus(401);
@@ -60,6 +50,10 @@ const getUser = async (req,res) => {
       WHERE users.id = $1
       GROUP BY users.id
     `, [id]);
+
+    if(userResult.rowCount === 0){
+      return res.sendStatus(404);
+    }
 
     const urlsResult = await db.query(`
       SELECT id,"shortUrl",url,"visitCount"
