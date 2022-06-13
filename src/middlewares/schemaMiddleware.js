@@ -1,4 +1,4 @@
-const schemaValidator = async (schema) => {
+const schemaValidator = (schema) => {
   return (req,res,next) => {
     const validation = schema.validate(req.body, { abortEarly: true });
     if (validation.error) {
